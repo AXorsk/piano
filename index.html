@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Piano</title>
+	<link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+	<canvas width="900" height="200"></canvas>
+	<div class="keyboard"></div>
+	<div class="footer">
+		<footer id="footer">None</footer>
+	</div>
+	<script src="./js/jquery-3.3.1.js"></script>
+	<script src="./js/keyboard.min.js"></script>
+	<script src="./js/canvas.js"></script>
+	<script>
+		$('textarea').focus();
+		$('.keyboard').keyboard({});
+		var pw = new ParticleWave("canvas");
+		pw.run();
+
+		let audios = document.querySelectorAll("audio");
+		$("body").keydown(function (e) {
+			// var _key = e.key.toLowerCase().charCodeAt();
+			var _key;
+			if (e.key) {
+				_key = e.key.toLowerCase().charCodeAt();
+			} else {
+				_key = $(e.target).attr("data_index");
+			}
+			
+			$("#footer").html(e.key+" : "+e.keyCode+" ~ "+_key);
+
+			let index = _key % 27;
+			createAudio(`musics/paino${index}.mp3`);
+		})
+
+		$(".keyboard").on("click", "li", function (e) {
+			let index = $(e.target).attr("data_index");
+			
+			index = index % 27;
+			createAudio(`musics/paino${index}.mp3`);
+		})
+
+		function createAudio(src) {
+			let audio = document.createElement("audio");
+			audio.autoplay = true;
+			audio.src = src;
+		}
+	</script>
+</body>
+
+</html>
